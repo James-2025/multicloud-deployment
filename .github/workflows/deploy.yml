@@ -62,13 +62,16 @@ jobs:
       #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Plan Terraform changes
+      working-directory: ${{ github.workspace }}/aws
       run: terraform plan -out=tfplan
 
     # Add a prompt to ask the user whether to apply or destroy changes
     - name: Apply Terraform changes
+      working-directory: ${{ github.workspace }}/aws
       run: terraform apply --auto-approve
 
     - name: Clean up
+      working-directory: ${{ github.workspace }}/aws
       run: rm tfplan
 
   deploy_azure:
@@ -107,19 +110,22 @@ jobs:
         echo "ARM_CLIENT_SECRET=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.clientSecret')" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.tenantId')" >> $GITHUB_ENV
 
-    - name: List files in the working directory
-      run: ls -R ${{ github.workspace }}/azure
+    # - name: List files in the working directory
+    #   run: ls -R ${{ github.workspace }}/azure
 
     - name: Initialize Terraform
       working-directory: ${{ github.workspace }}/azure
       run: terraform init
 
     - name: Plan Terraform deployment
+      working-directory: ${{ github.workspace }}/azure
       run: 
         terraform plan -out tfplan -lock=false 
 
     - name: Apply Terraform deployment
+      working-directory: ${{ github.workspace }}/azure
       run: terraform apply -auto-approve -lock=false
 
     - name: Clean up
+      working-directory: ${{ github.workspace }}/azure
       run: rm tfplan
