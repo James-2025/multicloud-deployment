@@ -143,7 +143,7 @@ resource "azurerm_virtual_machine" "vm" {
 
   # The provisioners will now reference the public IP address directly
   provisioner "file" {
-    source      = "index.html"
+    source      = "app/index.html"
     destination = "/tmp/index.html"
     connection {
       type        = "ssh"

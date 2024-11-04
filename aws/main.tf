@@ -57,9 +57,9 @@ resource "aws_instance" "example" {
   }
 
   provisioner "file" {
-    #source      = "index.html"
+    #source      = "app/index.html"
     #destination = "/var/www/html/index.html"
-    source      = "index.html"
+    source      = "app/index.html"
     destination = "/tmp/index.html"  # Use a temporary directory
   
   }
